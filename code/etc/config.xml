@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jarlssen_EmailTesting>
+            <version>0.1</version>
+        </Jarlssen_EmailTesting>
+    </modules>
+    <global>
+        <blocks>
+            <jarlssen_emailtesting>
+                <class>Jarlssen_EmailTesting_Block</class>
+            </jarlssen_emailtesting>
+            <adminhtml>
+                <rewrite>
+                    <system_email_template_grid>Jarlssen_EmailTesting_Block_Adminhtml_System_Email_Template_Grid</system_email_template_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Jarlssen_EmailTesting before="Mage_Adminhtml">Jarlssen_EmailTesting_Adminhtml</Jarlssen_EmailTesting>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>
+

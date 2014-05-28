@@ -20,10 +20,10 @@ class Jarlssen_EmailTesting_Block_Adminhtml_Customer_Chooser extends Mage_Adminh
         return true;
     }
 
-    private function getActionUrl()
+    private function getActionUrl($storeId)
     {
         $templateIds = $this->getRequest()->getParam('template_id');
-        return $this->getUrl('*/*/sendEmails', $templateIds ? array('template_id' => $templateIds) : array());
+        return $this->getUrl('*/*/sendEmails', array('template_id' => $templateIds, 'store_id' => $storeId));
     }
 
     protected function _prepareMassaction()
@@ -31,12 +31,14 @@ class Jarlssen_EmailTesting_Block_Adminhtml_Customer_Chooser extends Mage_Adminh
         $this->setMassactionIdField('entity_id');
         $this->getMassactionBlock()->setFormFieldName('customer');
         $this->getMassactionBlock()->setUseAjax(true);
-        $this->getMassactionBlock()->addItem('test', array(
-            'label'    => Mage::helper('customer')->__('Test'),
-            'url'      => $this->getActionUrl(),
-            'complete' => '(function(grid,opt,tx){eval(tx.responseText);})',
-            'selected' => true
-        ));
+        foreach(Mage::getSingleton('adminhtml/system_store')->getStoreCollection() as $s) {
+            $this->getMassactionBlock()->addItem($s->getCode(), array(
+                'label'    => $s->getName(),
+                'url'      => $this->getActionUrl($s->getStoreId()),
+                'complete' => '(function(grid,opt,tx){eval(tx.responseText);})',
+            ));
+
+        }
         return $this;
     }
 

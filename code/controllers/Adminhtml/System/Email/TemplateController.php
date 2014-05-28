@@ -17,7 +17,7 @@ class Jarlssen_EmailTesting_Adminhtml_System_Email_TemplateController extends Ma
     {
         $templateIds = Mage::getModel('adminhtml/session')->getEmailTemplates();
         $customerIds = $this->getRequest()->getParam('customer');
-
+        $storeId = $this->getRequest()->getParam('store_id');
         $exception = null;
 
         try {
@@ -35,7 +35,7 @@ class Jarlssen_EmailTesting_Adminhtml_System_Email_TemplateController extends Ma
                         'name' => 'name',
                         'email' => 'snth@snth.com'
                     ));
-                    //$mailer->setStoreId($storeId);
+                    $mailer->setStoreId($storeId);
                     $mailer->setTemplateId((int)$t);
                     $order = Mage::getResourceModel('sales/order_collection')
                         ->addFieldToSelect('*')
@@ -43,7 +43,6 @@ class Jarlssen_EmailTesting_Adminhtml_System_Email_TemplateController extends Ma
                         ->addFieldToFilter('state', array('in' => Mage::getSingleton('sales/order_config')->getVisibleOnFrontStates()))
                         ->setOrder('created_at', 'desc')
                         ->getFirstItem();
-                    Mage::log($order->debug());
                     $mailer->setTemplateParams(array(
                         'customer' => $customer,
                         'order' => $order
@@ -92,7 +91,7 @@ EOD;
         echo <<<EOD
         text = new Ajax.Request('{$this->getUrl('*/*/chooser', array('template_id'=>$templateIds))}', {
             onComplete:function(transport) {
-                Dialog.confirm(transport.responseText, {
+                Dialog.info(transport.responseText, {
                     draggable: true,
                     resizable: true,
                     closable: true,

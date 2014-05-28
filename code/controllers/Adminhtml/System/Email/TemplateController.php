@@ -27,7 +27,7 @@ class Jarlssen_EmailTesting_Adminhtml_System_Email_TemplateController extends Ma
 
                     $mailer = Mage::getModel('core/email_template_mailer');
                     $emailInfo = Mage::getModel('core/email_info');
-                    $emailInfo->addTo($c->getEmail(), $c->getName());
+                    $emailInfo->addTo($customer->getEmail(), $customer->getName());
                     $mailer->addEmailInfo($emailInfo);
 
                     // Set all required params and send emails
